@@ -15,10 +15,10 @@
     form{width:420px;margin-top:6rem;}
     .card{background:#1a1a1a;border:2px solid var(--red);border-radius:12px;padding:1.8rem;box-shadow:0 0 15px var(--red);}
     .card-header h3{text-align:center;color:var(--white);text-shadow:0 0 8px var(--red);margin-bottom:1rem;}
-    .filescript label{display:block;background:#1a1a1a;color:var(--white);border:2px solid var(--red);border-radius:6px;padding:.8rem;text-align:center;margin-bottom:1rem;cursor:pointer;text-shadow:0 0 5px var(--red);transition:.3s;} .filescript label:hover{background:var(--red);} .filescript input[type="file"]{display:none}
+    .filescript label{display:block;background:#1a1a1a;color:var(--white);border:2px solid var(--red);border-radius:6px;padding:.8rem;text-align:center;margin-bottom:1rem;cursor:pointer;text-shadow:0 0 5px var(--red);transition:.3s;} .filescript label:hover{background:var(--red);} .filescript input[type="file"]{display:none;}
     #num-of-files{text-align:center;font-size:.85rem;color:#ccc;}
-    .inputBox{position:relative;margin-top:1.2rem;margin-bottom:1.2rem;} .inputBox input{width:100%;padding:.9rem;background:#000;border:2px solid var(--red);border-radius:6px;color:var(--white);} .inputBox span{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#ccc;font-size:.85rem;transition:.3s;} .inputBox input:focus~span,.inputBox input:valid~span{top:0;font-size:.7rem;background:#1a1a1a;padding:0 4px;border-radius:4px;color:var(--white);}
-    button{width:100%;padding:1rem;border:none;border-radius:8px;font-weight:bold;color:var(--white);cursor:pointer;transition:.3s;margin-top:.7rem;} 
+    .inputBox{position:relative;margin-top:1.2rem;margin-bottom:1.2rem;} .inputBox input{width:100%;padding:.9rem;background:#000;border:2px solid var(--red);border-radius:6px;color:var(--white);} .inputBox span{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#ccc;font-size:.85rem;transition:.3s;} .inputBox input:focus~span,.inputBox input:valid~span{top:0;font-size:.7rem;background:#1a1a1a;padding:0 4px;border-radius:4px;color:#fff;}
+    button{width:100%;padding:1rem;border:none;border-radius:8px;font-weight:bold;color:#fff;cursor:pointer;transition:.3s;margin-top:.7rem;} 
     #obfuscate{background:var(--red);box-shadow:0 0 10px var(--red);} #obfuscate:hover{transform:scale(.97);box-shadow:0 0 15px var(--white);} 
     #decrypt{background:#444;box-shadow:0 0 10px rgba(255,255,255,.3);} #decrypt:hover{transform:scale(.97);box-shadow:0 0 15px rgba(255,255,255,.6);} 
   </style>
@@ -34,12 +34,12 @@
     <div class="card-header"><h3>Obfuscator</h3></div>
     <div class="filescript">
       <input type="file" id="file"><label for="file">Select Script (Encrypt / Decrypt)</label>
-      <div id="num-of-files">No File Choosen</div>
-      <h5 style="text-align:center;color:#777; margin-top:5px">Only receive .lua or .txt file!</h5>
+      <div id="num-of-files">No File Chosen</div>
+      <h5 style="text-align:center;color:#777; margin-top:5px">Only .lua or .txt file!</h5>
     </div>
-    <div class="inputBox"><input type="text" id="key" required><span>Encrypt Key/Decrypt Key</span></div>
+    <div class="inputBox"><input type="text" id="key" required><span>Encrypt Key / Decrypt Key</span></div>
     <button type="submit" id="obfuscate">Encrypt / Obfuscate</button>
-    <button type="button" id="decrypt">Decrypt/ Obfuscatet</button>
+    <button type="button" id="decrypt">Decrypt</button>
   </div>
 </form>
 
@@ -62,57 +62,42 @@ if(k==key.length){k=0;}}return tabel;};
 function simpleDecrypt(arr,key){let res="";let kk=0;for(let x of arr){kk++;
 res+=String.fromCharCode(x-key.charCodeAt(kk));if(kk==key.length)kk=0;}return res;}
 
-let tab1=[],tab2=[],tab3=[],tab4=[],tab5=[],tab6=[];
-for(let i=0;i<leng;i++){tab1[i]=abcTab[Math.floor(Math.random()*abcTab.length)].charCodeAt(0);
-tab2[i]=abcTab[Math.floor(Math.random()*abcTab.length)].charCodeAt(0);
-tab3[i]=abcTab[Math.floor(Math.random()*abcTab.length)].charCodeAt(0);
-tab4[i]=abcTab[Math.floor(Math.random()*abcTab.length)].charCodeAt(0);
-tab5[i]=abcTab[Math.floor(Math.random()*abcTab.length)].charCodeAt(0);
-tab6[i]=abcTab[Math.floor(Math.random()*abcTab.length)].charCodeAt(0);}
-tab1=tab1.join();tab2=tab2.join();tab3=tab3.join();tab4=tab4.join();tab5=tab5.join();tab6=tab6.join();
-
-const alibi=(a,b,c,t)=>{return `_ENV={string=string,table=table,math=math,pairs=pairs,load=load,print=print};${a}="${b}";${b}="${a}";${c}={${t}};function xor(t)local c="" for i=1,#${b} do local byte=string.byte(${b},i);local q=string.byte(${a},(i-1)%#${a}+1);c=c..string.char(bit.bxor(byte,q));end return c end;bit={bxor=function(a,b)local r,m=0,1;while a>0 and b>0 do local aa,bb=a%2,b%2;r=r+m*((aa+bb)%2);m=m*2;a=a>>1;b=b>>1 end;if a>0 then r=r+m*a end;if b>0 then r=r+m*b end;return r end};xor(${c})${ran1}z="Encrypt By GML";`;}
-
-const decX=(tbl)=>{let s=ran3,kl=ran4,l=ran1,v=ran2,h=ran5;return`${s}={${tbl.join()}};${kl}=0;${h}='';for ${l},${v} in pairs(${s}) do ${kl}=${kl}+1;${h}=${h}.._ENV["\\\\115\\\\116\\\\114\\\\105\\\\110\\\\103"]["\\\\99\\\\104\\\\97\\\\114"](${v}-_ENV["\\\\115\\\\116\\\\114\\\\105\\\\110\\\\103"]["\\\\98\\\\121\\\\116\\\\101"]("${realKey}",${kl}));if ${kl}==#("${realKey}") then ${kl}=0;end end;if ${ran1}z=="\\\\69\\\\110\\\\99\\\\114\\\\121\\\\112\\\\116\\\\32\\\\66\\\\121\\\\32\\\\89\\\\97\\\\115\\\\117" then _ENV["\\\\108\\\\111\\\\97\\\\100"](${h})() else print("Error") end;`;}
-
 const fileInput=document.getElementById("file"),num=document.getElementById("num-of-files"),read=new FileReader(),form=document.getElementById("form"),dBtn=document.getElementById("decrypt");
 
-fileInput.addEventListener("change",()=>{let f=fileInput.files[0];if(!f)return;let n=f.name;let s=(f.size/1024).toFixed(2);num.innerHTML=`${n} (${s}Kb)`;
-});
+fileInput.addEventListener("change",()=>{let f=fileInput.files[0];if(!f)return;let n=f.name;let s=(f.size/1024).toFixed(2);num.innerHTML=`${n} (${s}Kb)`;});
 
 form.addEventListener("submit",(e)=>{
  e.preventDefault();
  let f=document.getElementById("file").files[0];
  if(!f){alert('Upload file first!');return;}
  let key=document.getElementById("key").value;
- for(let i=0;i<key.length;i++){realKey+='\\'+key.charCodeAt(i);}
+ realKey="";for(let i=0;i<key.length;i++){realKey+='\\'+key.charCodeAt(i);}
  read.readAsText(f);
  read.onload=()=>{
  const sc=read.result;
- const t=`local key=[[${key}]];${ran1}z="Encrypt By GML";${ran2}=${ran1};${ran3}=${ran2};${ran4}=${ran3};${ran5}=${ran4};${ran6}=${ran5};`;
- const out=t+alibi(ran1,ran2,ran3,tab1)+alibi(ran4,ran2,ran5,tab2)+alibi(ran6,ran3,ran1,tab3)+decX(xorE(sc,key))+alibi(ran2,ran4,ran6,tab4)+alibi(ran1,ran4,ran5,tab5)+alibi(ran2,ran1,ran3,tab6);
- let blob=new Blob([out],{type:'octet-stream'});const url=URL.createObjectURL(blob);
+ const tabel=xorE(sc,key);
+ let strTable=tabel.toString();
+ let blob=new Blob([strTable],{type:'text/plain'});
+ const url=URL.createObjectURL(blob);
  const a=Object.assign(document.createElement('a'),{href:url,style:'display:none',download:'Encrypted_'+f.name});
  a.click();URL.revokeObjectURL(url);a.remove();
- };
+ }
 });
 
 dBtn.addEventListener('click',()=>{
  let f=fileInput.files[0];
- if(!f){return alert('Upload encrypted lua file!');}
+ if(!f){return alert('Upload encrypted file (hasil encrypt) !');}
  let key=document.getElementById('key').value;
  read.readAsText(f);
  read.onload=()=>{
  try{
-  let match=read.result.match(/[0-9, ]+/);
-  if(!match) return alert('Not valid encrypted file!');
-  let arr=eval('['+match[0]+']');
+  let arr=read.result.split(',').map(x=>parseInt(x.trim()));
   let plain=simpleDecrypt(arr,key);
   let blob=new Blob([plain],{type:'text/plain'});
   const url=URL.createObjectURL(blob);
   const a=document.createElement('a');a.href=url;a.download='Decrypted_'+f.name;
   a.click();URL.revokeObjectURL(url);
- }catch(e){alert('Failed decrypt! maybe wrong format or wrong key.');}
+ }catch(e){alert('Failed decrypt! wrong key atau bukan hasil encrypt dari sini');}
  }
 });
 </script>

@@ -71,14 +71,19 @@ tab5[i]=abcTab[Math.floor(Math.random()*abcTab.length)].charCodeAt(0);
 tab6[i]=abcTab[Math.floor(Math.random()*abcTab.length)].charCodeAt(0);}
 tab1=tab1.join();tab2=tab2.join();tab3=tab3.join();tab4=tab4.join();tab5=tab5.join();tab6=tab6.join();
 
-const alibi=(a,b,c,t)=>{return `_ENV={string=string,table=table,math=math,pairs=pairs,load=load,print=print};${a}="${b}";${b}="${a}";${c}={${t}};function xor(t)local c="" for i=1,#${b} do local byte=string.byte(${b},i);local q=string.byte(${a},(i-1)%#${a}+1);c=c..string.char(bit.bxor(byte,q));end return c end;bit={bxor=function(a,b)local r,m=0,1;while a>0 and b>0 do local aa,bb=a%2,b%2;r=r+m*((aa+bb)%2);m=m*2;a=a>>1;b=b>>1 end;if a>0 then r=r+m*a end;if b>0 then r=r+m*b end;return r end};xor(${c})${ran1}z="Encrypt By GML";`;}
+const alibi=(a,b,c,t)=>{return `
+local __s=string local __t=table local __m=math local __p=pairs local __l=load local __pr=print;
+_ENV={string=__s,table=__t,math=__m,pairs=__p,load=__l,print=__pr};
+${a}="${b}";${b}="${a}";${c}={${t}};
+function xor(t)local c="" for i=1,#${b} do local byte=string.byte(${b},i);local q=string.byte(${a},(i-1)%#${a}+1);c=c..string.char(bit.bxor(byte,q));end return c end;
+bit={bxor=function(a,b)local r,m=0,1;while a>0 and b>0 do local aa,bb=a%2,b%2;r=r+m*((aa+bb)%2);m=m*2;a=a>>1;b=b>>1 end;if a>0 then r=r+m*a end;if b>0 then r=r+m*b end;return r end};
+xor(${c})${ran1}z="Encrypt By GML";`}
 
 const decX=(tbl)=>{let s=ran3,kl=ran4,l=ran1,v=ran2,h=ran5;return`${s}={${tbl.join()}};${kl}=0;${h}='';for ${l},${v} in pairs(${s}) do ${kl}=${kl}+1;${h}=${h}.._ENV["\\\\115\\\\116\\\\114\\\\105\\\\110\\\\103"]["\\\\99\\\\104\\\\97\\\\114"](${v}-_ENV["\\\\115\\\\116\\\\114\\\\105\\\\110\\\\103"]["\\\\98\\\\121\\\\116\\\\101"]("${realKey}",${kl}));if ${kl}==#("${realKey}") then ${kl}=0;end end;if ${ran1}z=="\\\\69\\\\110\\\\99\\\\114\\\\121\\\\112\\\\116\\\\32\\\\66\\\\121\\\\32\\\\89\\\\97\\\\115\\\\117" then _ENV["\\\\108\\\\111\\\\97\\\\100"](${h})() else print("Error") end;`;}
 
 const fileInput=document.getElementById("file"),num=document.getElementById("num-of-files"),read=new FileReader(),form=document.getElementById("form"),dBtn=document.getElementById("decrypt");
 
-fileInput.addEventListener("change",()=>{let f=fileInput.files[0];if(!f)return;let n=f.name;let s=(f.size/1024).toFixed(2);num.innerHTML=`${n} (${s}Kb)`;
-});
+fileInput.addEventListener("change",()=>{let f=fileInput.files[0];if(!f)return;let n=f.name;let s=(f.size/1024).toFixed(2);num.innerHTML=`${n} (${s}Kb)`;});
 
 form.addEventListener("submit",(e)=>{
  e.preventDefault();
@@ -92,7 +97,7 @@ form.addEventListener("submit",(e)=>{
  const t=`local key=[[${key}]];${ran1}z="Encrypt By GML";${ran2}=${ran1};${ran3}=${ran2};${ran4}=${ran3};${ran5}=${ran4};${ran6}=${ran5};`;
  const out=t+alibi(ran1,ran2,ran3,tab1)+alibi(ran4,ran2,ran5,tab2)+alibi(ran6,ran3,ran1,tab3)+decX(xorE(sc,key))+alibi(ran2,ran4,ran6,tab4)+alibi(ran1,ran4,ran5,tab5)+alibi(ran2,ran1,ran3,tab6);
  let blob=new Blob([out],{type:'octet-stream'});const url=URL.createObjectURL(blob);
- const a=Object.assign(document.createElement('a'),{href:url,style:'display:none',download:'Encrypted_'+f.name});
+ const a=document.createElement('a');a.href=url;a.style.display='none';a.download='Encrypted_'+f.name;
  a.click();URL.revokeObjectURL(url);a.remove();
  };
 });

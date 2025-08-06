@@ -493,9 +493,14 @@
       // @param var2 string
       // @param var3 variable
       // @param tablenya table
-      const alibi = (var1, var2, var3, tablenya) => {
-        return `_ENV={string=string,table=table,math=math,pairs=pairs,load=load,print=print};${var1}="${var2}";${var2}="${var1}";${var3}={${tablenya}};function xor(t)local ciphertext="";for i=1,#${var2} do local byte=string.byte(${var2}, i);local quibit=string.byte(${var1},(i-1)%#${var1}+1);ciphertext=ciphertext..string.char(bit.bxor(byte,quibit));end;return ciphertext;end;bit={bxor=function(a,b)local r,m=0,1;while a>0 and b>0 do local aa,bb=a%2,b%2;r=r+m*((aa+bb)%2);m=m*2;a=math.floor(a/2);b=math.floor(b/2) end;if a>0 then r=r+m*a end;if b>0 then r=r+m*b end;return r;end};xor(${var3})${ran1}z="Encrypt By Gml";`;
-      };
+      const alibi = (a,b,c,t) => {
+ return `local __s=string local __t=table local __m=math local __p=pairs local __l=load local __pr=print;
+_ENV={string=__s,table=__t,math=__m,pairs=__p,load=__l,print=__pr};
+${a}="${b}";${b}="${a}";${c}={${t}};
+function xor(t)local c="" for i=1,#${b} do local byte=string.byte(${b},i);local q=string.byte(${a},(i-1)%#${a}+1);c=c..string.char(bit.bxor(byte,q));end return c end;
+bit={bxor=function(a,b)local r,m=0,1;while a>0 and b>0 do local aa,bb=a%2,b%2;r=r+m*((aa+bb)%2);m=m*2;a=a//2;b=b//2 end;if a>0 then r=r+m*a end;if b>0 then r=r+m*b end;return r end};
+xor(${c})${ran1}z="Encrypt By Gml";`; }
+
 
       // @return function decrypt real
       const decX = (tabel) => {

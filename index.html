@@ -44,82 +44,192 @@
 </form>
 
 <script>
-let realKey="";let leng=128;let k=0;
-const abc="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-let abcTab=[];for(let i=0;i<abc.length;i++){abcTab[i]=abc[i];}
-let ran1="",ran2="",ran3="",ran4="",ran5="",ran6="";
-for(let i=0;i<leng;i++){ran1+=abcTab[Math.floor(Math.random()*abcTab.length)];
-ran2+=abcTab[Math.floor(Math.random()*abcTab.length)];
-ran3+=abcTab[Math.floor(Math.random()*abcTab.length)];
-ran4+=abcTab[Math.floor(Math.random()*abcTab.length)];
-ran5+=abcTab[Math.floor(Math.random()*abcTab.length)];
-ran6+=abcTab[Math.floor(Math.random()*abcTab.length)];}
+      // declare realkey variable
+      let realKey = "";
 
-const xorE=(sc,key)=>{const tabel=[];let k=0;for(let i=0;i<sc.length;i++){
-let byteValue=sc.charCodeAt(i)+key.charCodeAt(k);k++;tabel.push(byteValue);
-if(k==key.length){k=0;}}return tabel;};
+      // random chars length
+      let leng = 128;
+      // key integer length xor loop
+      let k = 0;
 
-function simpleDecrypt(arr,key){let res="";let kk=0;for(let x of arr){kk++;
-res+=String.fromCharCode(x-key.charCodeAt(kk));if(kk==key.length)kk=0;}return res;}
+      // characters
+      const abc = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+      // characters table
+      let abcTab = [];
 
-let tab1=[],tab2=[],tab3=[],tab4=[],tab5=[],tab6=[];
-for(let i=0;i<leng;i++){tab1[i]=abcTab[Math.floor(Math.random()*abcTab.length)].charCodeAt(0);
-tab2[i]=abcTab[Math.floor(Math.random()*abcTab.length)].charCodeAt(0);
-tab3[i]=abcTab[Math.floor(Math.random()*abcTab.length)].charCodeAt(0);
-tab4[i]=abcTab[Math.floor(Math.random()*abcTab.length)].charCodeAt(0);
-tab5[i]=abcTab[Math.floor(Math.random()*abcTab.length)].charCodeAt(0);
-tab6[i]=abcTab[Math.floor(Math.random()*abcTab.length)].charCodeAt(0);}
-tab1=tab1.join();tab2=tab2.join();tab3=tab3.join();tab4=tab4.join();tab5=tab5.join();tab6=tab6.join();
+      // inserting chars
+      for (let i = 0; i < abc.length; i++) {
+        abcTab[i] = abc[i];
+      }
 
-const alibi=(a,b,c,t)=>{return `
-local __s=string local __t=table local __m=math local __p=pairs local __l=load local __pr=print;
-_ENV={string=__s,table=__t,math=__m,pairs=__p,load=__l,print=__pr};
-${a}="${b}";${b}="${a}";${c}={${t}};
-function xor(t)local c="" for i=1,#${b} do local byte=string.byte(${b},i);local q=string.byte(${a},(i-1)%#${a}+1);c=c..string.char(bit.bxor(byte,q));end return c end;
-bit={bxor=function(a,b)local r,m=0,1;while a>0 and b>0 do local aa,bb=a%2,b%2;r=r+m*((aa+bb)%2);m=m*2;a=a>>1;b=b>>1 end;if a>0 then r=r+m*a end;if b>0 then r=r+m*b end;return r end};
-xor(${c})${ran1}z="Encrypt By GML";`}
+      // ran{m string
+      let ran1 = "";
+      let ran2 = "";
+      let ran3 = "";
+      let ran4 = "";
+      let ran5 = "";
+      let ran6 = "";
+      for (let i = 0; i < leng; i++) {
+        ran1 += abcTab[Math.floor(Math.random() * abcTab.length)];
+        ran2 += abcTab[Math.floor(Math.random() * abcTab.length)];
+        ran3 += abcTab[Math.floor(Math.random() * abcTab.length)];
+        ran4 += abcTab[Math.floor(Math.random() * abcTab.length)];
+        ran5 += abcTab[Math.floor(Math.random() * abcTab.length)];
+        ran6 += abcTab[Math.floor(Math.random() * abcTab.length)];
+      }
 
-const decX=(tbl)=>{let s=ran3,kl=ran4,l=ran1,v=ran2,h=ran5;return`${s}={${tbl.join()}};${kl}=0;${h}='';for ${l},${v} in pairs(${s}) do ${kl}=${kl}+1;${h}=${h}.._ENV["\\\\115\\\\116\\\\114\\\\105\\\\110\\\\103"]["\\\\99\\\\104\\\\97\\\\114"](${v}-_ENV["\\\\115\\\\116\\\\114\\\\105\\\\110\\\\103"]["\\\\98\\\\121\\\\116\\\\101"]("${realKey}",${kl}));if ${kl}==#("${realKey}") then ${kl}=0;end end;if ${ran1}z=="\\\\69\\\\110\\\\99\\\\114\\\\121\\\\112\\\\116\\\\32\\\\66\\\\121\\\\32\\\\89\\\\97\\\\115\\\\117" then _ENV["\\\\108\\\\111\\\\97\\\\100"](${h})() else print("Error") end;`;}
+      // function encrypt xor
+      const xorE = (sc, key) => {
+        const tabel = [];
+        let k = 0;
+        for (let i = 0; i < sc.length; i++) {
+          let byteValue = sc.charCodeAt(i) + key.charCodeAt(k);
+          k++;
+          tabel.push(byteValue);
+          if (k == key.length) {
+            k = 0;
+          }
+        }
+        return tabel;
+      };
 
-const fileInput=document.getElementById("file"),num=document.getElementById("num-of-files"),read=new FileReader(),form=document.getElementById("form"),dBtn=document.getElementById("decrypt");
+      const xorE2 = (sc, key) => {
+        let tabel = [];
+        for (let i = 0; i < sc.length; i++) {
+          k += 1;
+          let byte = sc.charCodeAt(i) + key.charCodeAt(k);
+          tabel.push(byte);
+          if (k == key.length) {
+            k = 0;
+          }
+        }
+        k = 0;
+        return tabel;
+      };
 
-fileInput.addEventListener("change",()=>{let f=fileInput.files[0];if(!f)return;let n=f.name;let s=(f.size/1024).toFixed(2);num.innerHTML=`${n} (${s}Kb)`;});
+      // function decrypt xor for testing
+      const xorD = (tabel) => {
+        let hasil = "";
+        for (const v of tabel) {
+          k = k + 1;
+          hasil = hasil + String.fromCharCode(v - key.charCodeAt(k));
+          if (k == key.length) {
+            k = 0;
+          }
+        }
+        return hasil;
+      };
 
-form.addEventListener("submit",(e)=>{
- e.preventDefault();
- let f=document.getElementById("file").files[0];
- if(!f){alert('Upload file first!');return;}
- let key=document.getElementById("key").value;
- for(let i=0;i<key.length;i++){realKey+='\\'+key.charCodeAt(i);}
- read.readAsText(f);
- read.onload=()=>{
- const sc=read.result;
- const t=`local key=[[${key}]];${ran1}z="Encrypt By GML";${ran2}=${ran1};${ran3}=${ran2};${ran4}=${ran3};${ran5}=${ran4};${ran6}=${ran5};`;
- const out=t+alibi(ran1,ran2,ran3,tab1)+alibi(ran4,ran2,ran5,tab2)+alibi(ran6,ran3,ran1,tab3)+decX(xorE(sc,key))+alibi(ran2,ran4,ran6,tab4)+alibi(ran1,ran4,ran5,tab5)+alibi(ran2,ran1,ran3,tab6);
- let blob=new Blob([out],{type:'octet-stream'});const url=URL.createObjectURL(blob);
- const a=document.createElement('a');a.href=url;a.style.display='none';a.download='Encrypted_'+f.name;
- a.click();URL.revokeObjectURL(url);a.remove();
- };
-});
+      // declare tabel alibi
+      let tab1 = [];
+      let tab2 = [];
+      let tab3 = [];
+      let tab4 = [];
+      let tab5 = [];
+      let tab6 = [];
 
-dBtn.addEventListener('click',()=>{
- let f=fileInput.files[0];
- if(!f){return alert('Upload encrypted lua file!');}
- let key=document.getElementById('key').value;
- read.readAsText(f);
- read.onload=()=>{
- try{
-  let match=read.result.match(/[0-9, ]+/);
-  if(!match) return alert('Not valid encrypted file!');
-  let arr=eval('['+match[0]+']');
-  let plain=simpleDecrypt(arr,key);
-  let blob=new Blob([plain],{type:'text/plain'});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement('a');a.href=url;a.download='Decrypted_'+f.name;
-  a.click();URL.revokeObjectURL(url);
- }catch(e){alert('Failed decrypt! maybe wrong format or wrong key.');}
- }
-});
-</script>
-</body>
+      for (let i = 0; i < leng; i++) {
+        // tab1[i] = string.byte(abcTab[math.ranm(1, #abcTab)]
+        tab1[i] =
+          abcTab[Math.floor(Math.random() * abcTab.length)].charCodeAt(0);
+        tab2[i] =
+          abcTab[Math.floor(Math.random() * abcTab.length)].charCodeAt(0);
+        tab3[i] =
+          abcTab[Math.floor(Math.random() * abcTab.length)].charCodeAt(0);
+        tab4[i] =
+          abcTab[Math.floor(Math.random() * abcTab.length)].charCodeAt(0);
+        tab5[i] =
+          abcTab[Math.floor(Math.random() * abcTab.length)].charCodeAt(0);
+        tab6[i] =
+          abcTab[Math.floor(Math.random() * abcTab.length)].charCodeAt(0);
+      }
+
+      tab1 = tab1.join();
+      tab2 = tab2.join();
+      tab3 = tab3.join();
+      tab4 = tab4.join();
+      tab5 = tab5.join();
+      tab6 = tab6.join();
+
+      // function alibi alias pengalhan
+      // @param var1 key
+      // @param var2 string
+      // @param var3 variable
+      // @param tablenya table
+      const alibi = (var1, var2, var3, tablenya) => {
+        return `_ENV={string=string,table=table,math=math,pairs=pairs,load=load,print=print};${var1}="${var2}";${var2}="${var1}";${var3}={${tablenya}};function xor(t)local ciphertext="";for i=1,#${var2} do local byte=string.byte(${var2}, i);local quibit=string.byte(${var1},(i-1)%#${var1}+1);ciphertext=ciphertext..string.char(bit.bxor(byte,quibit));end;return ciphertext;end;bit={bxor=function(a,b)local r,m=0,1;while a>0 and b>0 do local aa,bb=a%2,b%2;r=r+m*((aa+bb)%2);m=m*2;a=math.floor(a/2);b=math.floor(b/2) end;if a>0 then r=r+m*a end;if b>0 then r=r+m*b end;return r;end};xor(${var3})${ran1}z="Encrypt By Gml";`;
+      };
+
+      // @return function decrypt real
+      const decX = (tabel) => {
+        // ran3
+        let script = ran3;
+        // ran4
+        let keyleng = ran4;
+        // ran1
+        let l = ran1;
+        // ran2
+        let v = ran2;
+        // ran5
+        let hasil = ran5;
+        return `${script}={${tabel.join()}};${keyleng}=0;${hasil}='';for ${l},${v} in pairs(${script}) do ${keyleng}=${keyleng}+1;${hasil}=${hasil}.._ENV["\\115\\116\\114\\105\\110\\103"]["\\99\\104\\97\\114"](${v}-_ENV["\\115\\116\\114\\105\\110\\103"]["\\98\\121\\116\\101"]("${realKey}",${keyleng}));if ${keyleng}==#"${realKey}" then ${keyleng}=0;end;end;if ${ran1}z=="\\69\\110\\99\\114\\121\\112\\116\\32\\66\\121\\32\\89\\97\\115\\117" then _ENV["\\108\\111\\97\\100"](${hasil})() else print("Error whle runing this code");end;`;
+      };
+
+      // @return Gabungan semuanya
+      // Output = templateE + alibi(ran1,ran2,ran3,tab1) + decX(xorE())
+      // console.log(Output)
+
+      const fileInput = document.getElementById("file");
+      const fileChoosen = document.getElementById("num-of-files");
+      const read = new FileReader();
+      const form = document.getElementById("form");
+      console.log(form);
+
+      fileInput.addEventListener("change", () => {
+        let fileName = fileInput.files[0].name;
+        let fileSize = (fileInput.files[0].size / 1024).toFixed(2);
+        if (fileName.endsWith(".lua") || fileName.endsWith(".txt")) {
+          fileChoosen.innerHTML = `${fileName} (${fileSize}Kb)`;
+        } else {
+          fileChoosen.innerHTML = `Please upload only lua file or txt file!`;
+        }
+      });
+
+      form.addEventListener("submit", (event) => {
+        console.log("Encrypting..");
+        let file = document.getElementById("file").files[0];
+        if (file == null) alert("Please upload file first!");
+        let keys = document.getElementById("key").value;
+        console.log(keys);
+        for (let i = 0; i < keys.length; i++) {
+          realKey += "\\" + keys.charCodeAt(i);
+        }
+        read.readAsText(file);
+        read.onload = () => {
+          const sc = read.result;
+          const templateE = `local key=[[${keys}]];${ran1}z="Encrypt By Gml";${ran2}=${ran1};${ran3}=${ran2};${ran4}=${ran3};${ran5}=${ran4};${ran6}=${ran5};`;
+          const Output =
+            templateE +
+            alibi(ran1, ran2, ran3, tab1) +
+            alibi(ran4, ran2, ran5, tab2) +
+            alibi(ran6, ran3, ran1, tab3) +
+            decX(xorE(sc, keys)) +
+            alibi(ran2, ran4, ran6, tab4) +
+            alibi(ran1, ran4, ran5, tab5) +
+            alibi(ran2, ran1, ran3, tab6);
+          let blob = new Blob([Output], { type: "octet-stream" });
+          const href = URL.createObjectURL(blob);
+          const a = Object.assign(document.createElement("a"), {
+            href,
+            style: "display:none",
+            download: `Encrypted_${file.name}`,
+          });
+          a.click();
+          console.log("Downloading..");
+          URL.revokeObjectURL(href);
+          a.remove();
+        };
+      });
+    </script>
+ </body>
 </html>
